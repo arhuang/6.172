@@ -1,0 +1,14 @@
+import os
+
+mode = ARGUMENTS.get('mode', 'release')
+
+alloc_type = ARGUMENTS.get('alloc_type', 'libcimpl')
+
+env = Environment()
+
+Export('mode', 'env', 'alloc_type')
+
+SConscript('./smalltest/SConscript',
+			variant_dir = os.path.join('./build', mode, 'smalltest'),
+		 	duplicate=0)
+

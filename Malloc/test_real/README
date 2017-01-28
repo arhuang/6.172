@@ -1,0 +1,38 @@
+Hey guys,
+
+Welcome to the world of real test cases!
+
+Currently there's only one smalltest that demonstrates how to integrate your own malloc into real applications. We'll add more benchmarks which serve as better test cases.
+
+This is how you port your memory allocator into any program: [smalltest serves as a simple example!]
+
+1. Firstly, your original program should use the malloc/free/realloc functions.  (Of course!)
+
+2. Then replace all the malloc/free/realloc with _malloc/_free/_realloc.
+    Copy the memory_replace.h into the same directory as your original program.
+    Add '#include "memory_replace.h"' into your original program.
+
+3. Here we use scons to compile rather than Makefile (sorry your TA who is responsible for this project isn't too good at Makefile's...)
+    Copy the SConscript into the same directory as your original program.
+    Open SConscript, add your source files (or your original program) into src_list. [scons is python-based, and you can treat SConscript as a special kind of python program]
+    Rewrite the line: Obj = 'your-target-object-file-name'
+ 
+4. Find the SConstruct file in the parent folder, and modify it.
+
+5. Compile:
+    Compile with scons, and specify the memory allocator you want to use:
+        scons alloc_type=libcimpl program_name
+  or    scons alloc_type=myimpl program_name
+  or    scons alloc_type=badimpl program_name
+  or    scons program_name [default is libcimpl]
+    For smalltest, the compile command would be:
+        scons smalltest
+  or    scons alloc_type=myimpl smalltest
+
+6. Run:
+    The target object file will be in the build/release/program-name/your-target-object-file-name.
+    For smalltest, the running command would be:
+        ./build/release/smalltest/SMALLtest
+
+This is the first time we integrate the memory allocator into real program, so there might be bugs in the scripts. You are welcome to report bugs and we would be really appreciate that!
+

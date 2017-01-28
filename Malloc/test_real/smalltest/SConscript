@@ -1,0 +1,43 @@
+import os
+
+#mode = ARGUMENTS.get('mode', 'release')
+#env = Environment()
+Import('mode', 'env', 'alloc_type')
+
+#print os.getenv("HOME")
+srcfile_path = os.path.join(Dir('#').abspath, '../mymalloc/')
+#srcfile_path = './'
+#srcfile_path = Dir('#').abspath
+#srcfile_path = os.path.join(Dir('#').abspath, os.pardir)
+#srcfile_path = os.path.join(srcfile_path, os.pardir)
+#src files
+src_list = []
+src_list.append(srcfile_path+'allocator.c')
+src_list.append(srcfile_path+'bad_allocator.c')
+src_list.append(srcfile_path+'clock.c')
+src_list.append(srcfile_path+'fcyc.c')
+src_list.append(srcfile_path+'fsecs.c')
+src_list.append(srcfile_path+'ftimer.c')
+src_list.append(srcfile_path+'libc_allocator.c')
+src_list.append(srcfile_path+'memlib.c')
+src_list.append('smalltest.c')
+
+
+#CFLAGS
+cflags = ['-std=gnu99', '-g', '-Wall', '-Wno-write-strings']
+
+if alloc_type == 'myimpl':
+    cflags += ['-DUSE_MY_MALLOC']
+elif alloc_type == 'badimpl':
+    cflags += ['-DUSE_BAD_MALLOC']
+else:
+    cflags += ['-DUSE_LIBC_MALLOC']
+
+#object file:
+Obj = './SMALLtest'
+
+localEnv = env.Clone()
+localEnv.Append(CPPFLAGS = cflags)
+localEnv.Append(CPPPATH = os.path.join(Dir('#').abspath, '../mymalloc'))
+localEnv.Append(LDFLAGS = ['-lpthread'])
+localEnv.Program(target=Obj, source=src_list)
